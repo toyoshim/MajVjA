@@ -17,4 +17,7 @@
         </activity>
     </application>
 
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="20" android:maxSdkVersion="20" />
+
 </manifest>
