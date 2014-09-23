@@ -16,6 +16,9 @@ public class MajVjRenderer implements Renderer, MajVj {
     private int mHeight;
     private boolean mCreated = false;
     private MajVjClient mClient;
+    private long mStartTime;
+    private long mElapsedTime;
+    private long mDeltaTime;
 
     public MajVjRenderer(MajVjClient client) {
         mClient = client;
@@ -31,6 +34,9 @@ public class MajVjRenderer implements Renderer, MajVj {
             return;
         mWidth = width;
         mHeight = height;
+        mStartTime = System.currentTimeMillis();
+        mElapsedTime = 0;
+        mDeltaTime = 0;
         if (!mCreated) {
             mClient.onCreated(this, mWidth, mHeight);
             mCreated = true;
@@ -42,7 +48,21 @@ public class MajVjRenderer implements Renderer, MajVj {
 
     @Override
     public void onDrawFrame(GL10 notUsed) {
+        long now = System.currentTimeMillis();
+        long elapsedTime = now - mStartTime;
+        mDeltaTime = elapsedTime - mElapsedTime;
+        mElapsedTime = elapsedTime;
         mClient.onDraw();
+    }
+
+    @Override
+    public long getElapsedTime() {
+        return mElapsedTime;
+    }
+
+    @Override
+    public long getDeltaTime() {
+        return mDeltaTime;
     }
 
     @Override
@@ -70,6 +90,6 @@ public class MajVjRenderer implements Renderer, MajVj {
 
     @Override
     public MajVjProgram createProgram() {
-        return new MajVjProgram();
+        return new MajVjProgram(this);
     }
 }

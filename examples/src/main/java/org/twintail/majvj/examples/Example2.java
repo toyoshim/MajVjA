@@ -1,6 +1,5 @@
 package org.twintail.majvj.examples;
 
-import android.content.res.AssetManager;
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -8,9 +7,6 @@ import org.twintail.majvj.MajVj;
 import org.twintail.majvj.MajVjActivity;
 import org.twintail.majvj.MajVjClient;
 import org.twintail.majvj.MajVjProgram;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class Example2 extends MajVjActivity implements MajVjClient {
 
@@ -40,14 +36,7 @@ public class Example2 extends MajVjActivity implements MajVjClient {
 
         // Create, compile, and link shaders from a file stored in assets. See also assets/shaders/.
         MajVjProgram mvp2 = mv.createProgram();
-        AssetManager assets = getResources().getAssets();
-        InputStream stream = null;
-        try {
-            stream = assets.open("shaders/vec4CoordThrough.vs");
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
-        }
-        if (mvp2.loadVertexShader(stream) &&
+        if (mvp2.loadVertexShader(readAssetAsString("shaders/vec4CoordThrough.vs")) &&
             mvp2.loadFragmentShader(getString(R.string.fillRedFragmentShader)) &&
             mvp2.link())
             Log.i(TAG, "MajVjProgram succeeded to load and link shaders.");

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
+import android.content.res.AssetManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 
 public abstract class MajVjActivity extends Activity {
@@ -27,6 +33,22 @@ public abstract class MajVjActivity extends Activity {
         }
         Log.i(TAG, "Supporting GLES version is " + info.getGlEsVersion());
         return info.reqGlEsVersion >= 0x00020000;
+    }
+
+    protected String readAssetAsString(String path) {
+        AssetManager assets = getResources().getAssets();
+        try {
+            InputStream stream = assets.open(path);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line;
+            StringBuilder builder = new StringBuilder();
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+            return builder.toString();
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to open " + path + ": " + e.toString());
+        }
+        return null;
     }
 
     @Override

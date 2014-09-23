@@ -8,6 +8,8 @@
         android:label="MajVjExamples" >
         <activity
             android:name=".Example1"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
             android:label="MajVjExample1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +19,8 @@
         </activity>
         <activity
             android:name=".Example2"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
             android:label="MajVjExample2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +33,17 @@
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:label="MajVjExample3">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Example4"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:label="MajVjExample4">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

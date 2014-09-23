@@ -3,11 +3,8 @@ package org.twintail.majvj;
 import android.opengl.GLES20;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.Buffer;
+import java.nio.FloatBuffer;
 
 public class MajVjProgram {
 
@@ -20,11 +17,13 @@ public class MajVjProgram {
     public static int TRIANGLE_FAN = GLES20.GL_TRIANGLE_FAN;
 
     private String TAG = "MajVjProgram";
+    private MajVj mMv;
     private int mVertexShader;
     private int mFragmentShader;
     private int mProgram;
 
-    public MajVjProgram() {
+    public MajVjProgram(MajVj mv) {
+        mMv = mv;
     }
 
     public void shutdown() {
@@ -43,37 +42,13 @@ public class MajVjProgram {
         return id != 0;
     }
 
-    public boolean loadVertexShader(InputStream shader) {
-        int id = createVertexShader(shader);
-        setVertexShader(id);
-        return id != 0;
-    }
-
     public boolean loadFragmentShader(String shader) {
         int id = createFragmentShader(shader);
         setFragmentShader(id);
         return id != 0;
     }
 
-    public boolean loadFragmentShader(InputStream shader) {
-        int id = createFragmentShader(shader);
-        setFragmentShader(id);
-        return id != 0;
-    }
-
     public boolean link(String vertexShader, String fragmentShader) {
-        return loadVertexShader(vertexShader) && loadFragmentShader(fragmentShader) && link();
-    }
-
-    public boolean link(InputStream vertexShader, InputStream fragmentShader) {
-        return loadVertexShader(vertexShader) && loadFragmentShader(fragmentShader) && link();
-    }
-
-    public boolean link(String vertexShader, InputStream fragmentShader) {
-        return loadVertexShader(vertexShader) && loadFragmentShader(fragmentShader) && link();
-    }
-
-    public boolean link(InputStream vertexShader, String fragmentShader) {
         return loadVertexShader(vertexShader) && loadFragmentShader(fragmentShader) && link();
     }
 
@@ -125,7 +100,47 @@ public class MajVjProgram {
         return true;
     }
 
+    public boolean setVertexAttribute(String name, int dimension, float[] values) {
+        FloatBuffer buffer = mMv.createFloatBufferFrom(values);
+        return setVertexAttributeBuffer(name, dimension, buffer);
+    }
+
+    public boolean setUniform(String name, float value) {
+        int id = getUniformLocation(name);
+        if (id < 0)
+            return false;
+        use();
+        GLES20.glUniform1f(id, value);
+        return true;
+    }
+
+    public boolean setUniform(String name, float[] values) {
+        int id = getUniformLocation(name);
+        if (id < 0)
+            return false;
+        use();
+        switch (values.length) {
+            case 1:
+                GLES20.glUniform1fv(id, 1, values, 0);
+                break;
+            case 2:
+                GLES20.glUniform2fv(id, 1, values, 0);
+                break;
+            case 3:
+                GLES20.glUniform3fv(id, 1, values, 0);
+                break;
+            case 4:
+                GLES20.glUniform4fv(id, 1, values, 0);
+                break;
+            default:
+                Log.e(TAG, "unsupported uniform length: " + values.length);
+                return false;
+        }
+        return true;
+    }
+
     public void drawArrays(int mode, int first, int count) {
+        use();
         GLES20.glDrawArrays(mode, first, count);
     }
 
@@ -149,34 +164,12 @@ public class MajVjProgram {
         return 0;
     }
 
-    private int createShader(int type, InputStream stream) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        String line;
-        StringBuilder builder = new StringBuilder();
-        try {
-            while ((line = reader.readLine()) != null)
-                builder.append(line);
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
-            return 0;
-        }
-        return createShader(type, builder.toString());
-    }
-
     private int createVertexShader(String shader) {
         return createShader(GLES20.GL_VERTEX_SHADER, shader);
     }
 
-    private int createVertexShader(InputStream stream) {
-        return createShader(GLES20.GL_VERTEX_SHADER, stream);
-    }
-
     private int createFragmentShader(String shader) {
         return createShader(GLES20.GL_FRAGMENT_SHADER, shader);
-    }
-
-    private int createFragmentShader(InputStream stream) {
-        return createShader(GLES20.GL_FRAGMENT_SHADER, stream);
     }
 
     private void deleteShader(int shader) {
@@ -199,6 +192,13 @@ public class MajVjProgram {
         int location = GLES20.glGetAttribLocation(mProgram, name);
         if (location < 0)
             Log.e(TAG, "Failed to find an attribute location for " + name);
+        return location;
+    }
+
+    private int getUniformLocation(String name) {
+        int location = GLES20.glGetUniformLocation(mProgram, name);
+        if (location < 0)
+            Log.e(TAG, "Failed to find an uniform location for " + name);
         return location;
     }
 
