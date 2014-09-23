@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text resource shaders for Example2 -->
+    <string name="vec4CoordThroughVertexShader">
+        attribute mediump vec4 aCoord;
+        void main() {
+            gl_Position = aCoord;
+        }
+    </string>
+    <string name="fillRedFragmentShader">
+        void main() {
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        }
+    </string>
+</resources>

@@ -6,9 +6,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="MajVj" >
+        <!-- Contains text resource shaders for Example2 -->
         <activity
-            android:name=".examples.Examples1"
-            android:label="MajVj" >
+            android:name=".examples.Example2"
+            android:label="MajVj">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -6,7 +6,7 @@ import org.twintail.majvj.MajVj;
 import org.twintail.majvj.MajVjActivity;
 import org.twintail.majvj.MajVjClient;
 
-public class Examples1 extends MajVjActivity implements MajVjClient {
+public class Example1 extends MajVjActivity implements MajVjClient {
     protected MajVjClient createClient() {
         return this;
     }
