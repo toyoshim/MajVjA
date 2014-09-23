@@ -42,8 +42,10 @@ public abstract class MajVjActivity extends Activity {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             String line;
             StringBuilder builder = new StringBuilder();
-            while ((line = reader.readLine()) != null)
+            while ((line = reader.readLine()) != null) {
                 builder.append(line);
+                builder.append("\n");
+            }
             return builder.toString();
         } catch (IOException e) {
             Log.e(TAG, "Failed to open " + path + ": " + e.toString());
