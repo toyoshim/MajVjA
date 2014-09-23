@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -17,12 +19,11 @@ public class MajVjRenderer implements Renderer, MajVj {
     private String TAG = "MajVj";
     private int mWidth;
     private int mHeight;
-    private boolean mCreated;
+    private boolean mCreated = false;
     private MajVjClient mClient;
 
     public MajVjRenderer(MajVjClient client) {
         mClient = client;
-        mCreated = false;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class MajVjRenderer implements Renderer, MajVj {
 
         String log = GLES20.glGetShaderInfoLog(id);
         Log.e(TAG, "Shader compilation failed: " + log);
-        GLES20.glDeleteShader(id);
+        deleteShader(id);
         return 0;
     }
 
@@ -100,19 +101,8 @@ public class MajVjRenderer implements Renderer, MajVj {
     }
 
     @Override
-    public int createProgram(String vertexShader, String fragmentShader) {
-        int vertexShaderId = createVertexShader(vertexShader);
-        int fragmentShaderId = createFragmentShader(fragmentShader);
-        // TODO: We should remember these IDs to delete when we delete the program.
-        return createProgram(vertexShaderId, fragmentShaderId);
-    }
-
-    @Override
-    public int createProgram(InputStream vertexShader, InputStream fragmentShader) {
-        int vertexShaderId = createVertexShader(vertexShader);
-        int fragmentShaderId = createFragmentShader(fragmentShader);
-        // TODO: We should remember these IDs to delete when we delete the program.
-        return createProgram(vertexShaderId, fragmentShaderId);
+    public void deleteShader(int shader) {
+        GLES20.glDeleteShader(shader);
     }
 
     @Override
@@ -123,13 +113,13 @@ public class MajVjRenderer implements Renderer, MajVj {
 
         GLES20.glAttachShader(id, vertexShader);
         if (GLES20.glGetError() != GLES20.GL_NO_ERROR) {
-            GLES20.glDeleteProgram(id);
+            deleteProgram(id);
             throw new AssertionError("glAttachShader failed on a vertex shader");
         }
 
         GLES20.glAttachShader(id, fragmentShader);
         if (GLES20.glGetError() != GLES20.GL_NO_ERROR) {
-            GLES20.glDeleteProgram(id);
+            deleteProgram(id);
             throw new AssertionError("glAttachShader failed on a fragment shader");
         }
 
@@ -141,7 +131,18 @@ public class MajVjRenderer implements Renderer, MajVj {
 
         String log = GLES20.glGetProgramInfoLog(id);
         Log.e(TAG, "Program link failed: " + log);
-        GLES20.glDeleteProgram(id);
+        deleteProgram(id);
         return 0;
     }
+
+    @Override
+    public void deleteProgram(int program) {
+        GLES20.glDeleteProgram(program);
+    }
+
+    @Override
+    public MajVjProgram createProgram() {
+        return new MajVjProgram(this);
+    }
+
 }

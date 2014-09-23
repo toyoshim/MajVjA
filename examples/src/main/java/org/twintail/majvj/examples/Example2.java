@@ -7,6 +7,7 @@ import android.util.Log;
 import org.twintail.majvj.MajVj;
 import org.twintail.majvj.MajVjActivity;
 import org.twintail.majvj.MajVjClient;
+import org.twintail.majvj.MajVjProgram;
 import org.twintail.majvj.examples.R;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class Example2 extends MajVjActivity implements MajVjClient {
     }
 
     public void onCreated(MajVj mv, int width, int height) {
-        GLES20.glClearColor(1f, 1f, 1f, 1f);
+        GLES20.glClearColor(0f, 0f, 1f, 1f);
 
         // Create, and compile a shader from String.
         String vertexShader =
@@ -54,6 +55,19 @@ public class Example2 extends MajVjActivity implements MajVjClient {
         // Link shaders, or we can simply pass InputStream or String as shaders.
         int program = mv.createProgram(shader1, fragmentShader);
         Log.i(TAG, "program' " + Integer.toString(program));
+
+        // Then, delete program and shaders when it is not needed any more.
+        mv.deleteProgram(program);
+        mv.deleteShader(shader1);
+        mv.deleteShader(shader2);
+        mv.deleteShader(shader3);
+
+        // Or use MajVjProgram class.
+        MajVjProgram mvp = mv.createProgram();
+        mvp.loadShaders(
+                getString(R.string.vec4CoordThroughVertexShader),
+                getString(R.string.fillRedFragmentShader));
+        mvp.shutdown();
     }
 
     public void onResized(int width, int height) {
