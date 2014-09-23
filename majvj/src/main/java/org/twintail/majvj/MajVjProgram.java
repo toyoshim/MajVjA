@@ -7,8 +7,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.Buffer;
 
 public class MajVjProgram {
+
+    public static int POINTS = GLES20.GL_POINTS;
+    public static int LINES = GLES20.GL_LINES;
+    public static int LINE_STRIP = GLES20.GL_LINE_STRIP;
+    public static int LINE_LOOP = GLES20.GL_LINE_LOOP;
+    public static int TRIANGLES = GLES20.GL_TRIANGLES;
+    public static int TRIANGLE_STRIP = GLES20.GL_TRIANGLE_STRIP;
+    public static int TRIANGLE_FAN = GLES20.GL_TRIANGLE_FAN;
 
     private String TAG = "MajVjProgram";
     private int mVertexShader;
@@ -22,6 +31,7 @@ public class MajVjProgram {
         setVertexShader(0);
         setFragmentShader(0);
         if (mProgram != 0) {
+            GLES20.glUseProgram(0);
             GLES20.glDeleteProgram(mProgram);
             mProgram = 0;
         }
@@ -105,6 +115,20 @@ public class MajVjProgram {
         return false;
     }
 
+    public boolean setVertexAttributeBuffer(String name, int dimension, Buffer buffer) {
+        int id = getAttributeLocation(name);
+        if (id < 0)
+            return false;
+        use();
+        GLES20.glEnableVertexAttribArray(id);
+        GLES20.glVertexAttribPointer(id, dimension, GLES20.GL_FLOAT, false, 0, buffer);
+        return true;
+    }
+
+    public void drawArrays(int mode, int first, int count) {
+        GLES20.glDrawArrays(mode, first, count);
+    }
+
     private int createShader(int type, String shader) {
         int id = GLES20.glCreateShader(type);
         if (GLES20.glGetError() != GLES20.GL_NO_ERROR || id == 0) {
@@ -169,5 +193,20 @@ public class MajVjProgram {
         if (mFragmentShader != 0)
             deleteShader(mFragmentShader);
         this.mFragmentShader = id;
+    }
+
+    private int getAttributeLocation(String name) {
+        int location = GLES20.glGetAttribLocation(mProgram, name);
+        if (location < 0)
+            Log.e(TAG, "Failed to find an attribute location for " + name);
+        return location;
+    }
+
+    public void use() {
+        if (mProgram == 0) {
+            Log.e(TAG, "use() is called even mProgram is not set.");
+            return;
+        }
+        GLES20.glUseProgram(mProgram);
     }
 }

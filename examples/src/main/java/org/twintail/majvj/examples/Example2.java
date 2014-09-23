@@ -8,7 +8,6 @@ import org.twintail.majvj.MajVj;
 import org.twintail.majvj.MajVjActivity;
 import org.twintail.majvj.MajVjClient;
 import org.twintail.majvj.MajVjProgram;
-import org.twintail.majvj.examples.R;
 
 import java.io.IOException;
 import java.io.InputStream;

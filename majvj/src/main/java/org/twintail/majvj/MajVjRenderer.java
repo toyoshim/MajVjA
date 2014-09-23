@@ -1,6 +1,11 @@
 package org.twintail.majvj;
 
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -32,6 +37,7 @@ public class MajVjRenderer implements Renderer, MajVj {
         } else {
             mClient.onResized(mWidth, mHeight);
         }
+        GLES20.glViewport(0, 0, mWidth, mHeight);
     }
 
     @Override
@@ -39,7 +45,30 @@ public class MajVjRenderer implements Renderer, MajVj {
         mClient.onDraw();
     }
 
-   @Override
+    @Override
+    public FloatBuffer createFloatBuffer(int length) {
+        return ByteBuffer.allocateDirect(length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+    }
+
+    @Override
+    public FloatBuffer createFloatBufferFrom(float[] values) {
+        FloatBuffer buffer = createFloatBuffer(values.length);
+        buffer.put(values).position(0);
+        return buffer;
+    }
+
+    @Override
+    public void clearColorBuffer(float r, float g, float b, float a) {
+        GLES20.glClearColor(r, g, b, a);
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+    }
+
+    @Override
+    public void clearDepthBuffer() {
+        GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT);
+    }
+
+    @Override
     public MajVjProgram createProgram() {
         return new MajVjProgram();
     }
