@@ -21,7 +21,7 @@ import java.io.InputStreamReader;
 
 public abstract class MajVjActivity extends Activity {
 
-    private String TAG = "MajVjActivity";
+    private final String TAG = "MajVjActivity";
     private GLSurfaceView mGLView;
 
     private boolean hasGLES20() {

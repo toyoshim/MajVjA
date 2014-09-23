@@ -53,6 +53,7 @@ public class MajVjRenderer implements Renderer, MajVj {
         mDeltaTime = elapsedTime - mElapsedTime;
         mElapsedTime = elapsedTime;
         mClient.onDraw();
+        GLES20.glFlush();
     }
 
     @Override

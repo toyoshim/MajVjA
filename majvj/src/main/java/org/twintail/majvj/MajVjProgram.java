@@ -8,15 +8,15 @@ import java.nio.FloatBuffer;
 
 public class MajVjProgram {
 
-    public static int POINTS = GLES20.GL_POINTS;
-    public static int LINES = GLES20.GL_LINES;
-    public static int LINE_STRIP = GLES20.GL_LINE_STRIP;
-    public static int LINE_LOOP = GLES20.GL_LINE_LOOP;
-    public static int TRIANGLES = GLES20.GL_TRIANGLES;
-    public static int TRIANGLE_STRIP = GLES20.GL_TRIANGLE_STRIP;
-    public static int TRIANGLE_FAN = GLES20.GL_TRIANGLE_FAN;
+    public static final int POINTS = GLES20.GL_POINTS;
+    public static final int LINES = GLES20.GL_LINES;
+    public static final int LINE_STRIP = GLES20.GL_LINE_STRIP;
+    public static final int LINE_LOOP = GLES20.GL_LINE_LOOP;
+    public static final int TRIANGLES = GLES20.GL_TRIANGLES;
+    public static final int TRIANGLE_STRIP = GLES20.GL_TRIANGLE_STRIP;
+    public static final int TRIANGLE_FAN = GLES20.GL_TRIANGLE_FAN;
 
-    private String TAG = "MajVjProgram";
+    private final String TAG = "MajVjProgram";
     private MajVj mMv;
     private int mVertexShader;
     private int mFragmentShader;

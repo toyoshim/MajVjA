@@ -11,7 +11,7 @@ import java.nio.FloatBuffer;
 
 public class Example3 extends MajVjActivity implements MajVjClient {
 
-    private String TAG = "Example3";
+    private final String TAG = "Example3";
     private MajVj mMv;
     private MajVjProgram mMvp;
 

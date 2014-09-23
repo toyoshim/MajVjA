@@ -11,7 +11,7 @@ import java.nio.FloatBuffer;
 
 public class Example4 extends MajVjActivity implements MajVjClient {
 
-    private String TAG = "Example4";
+    private final String TAG = "Example4";
     private MajVj mMv;
     private MajVjProgram mMvp;
     private int mWidth;
@@ -25,7 +25,7 @@ public class Example4 extends MajVjActivity implements MajVjClient {
         mMv = mv;
         mMvp = mv.createProgram();
         mMvp.link(readAssetAsString("shaders/glslSandbox.vs"), readAssetAsString("shaders/church.fs"));
-        float[] coords = {
+        final float[] coords = {
                 -1f, -1f,
                  1f, -1f,
                  1f,  1f,
@@ -33,7 +33,7 @@ public class Example4 extends MajVjActivity implements MajVjClient {
         };
         mMvp.setVertexAttribute("aCoord", 2, coords);
         mMvp.setUniform("time", 0f);
-        float[] mouse = { 0.5f, 0.5f };
+        final float[] mouse = { 0.5f, 0.5f };
         mMvp.setUniform("mouse", mouse);
         onResized(width, height);
 

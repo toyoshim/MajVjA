@@ -10,7 +10,7 @@ import org.twintail.majvj.MajVjProgram;
 
 public class Example2 extends MajVjActivity implements MajVjClient {
 
-    private String TAG = "Example2";
+    private final String TAG = "Example2";
 
     protected MajVjClient createClient() {
         return this;
