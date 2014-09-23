@@ -24,20 +24,23 @@ public class Example2 extends MajVjActivity implements MajVjClient {
     public void onCreated(MajVj mv, int width, int height) {
         GLES20.glClearColor(0f, 0f, 1f, 1f);
 
-        // Create, and compile a shader from String.
+        // Create, compile, and link shaders from String.
         String vertexShader =
                 "attribute mediump vec4 aCoord;\n" +
                 "void main() {\n" +
                 "  gl_Position = aCoord;\n" +
                 "}";
-        int shader1 = mv.createVertexShader(vertexShader);
-        Log.i(TAG, "shader1: " + Integer.toString(shader1));
+        MajVjProgram mvp1 = mv.createProgram();
+        if (mvp1.loadVertexShader(vertexShader))
+            Log.i(TAG, "MajVjProgram succeeded to load a vertex shader.");
+        // R.string is also available. See also res/values/shaders.xml.
+        if (mvp1.loadFragmentShader(getString(R.string.fillRedFragmentShader)))
+            Log.i(TAG, "MajVjProgram succeeded to load a fragment shader.");
+        if (mvp1.link())
+            Log.i(TAG, "MajVjProgram succeeded to link shaders.");
 
-        // Create, and compile a shader from R.string (See also res/values/shaders.xml)
-        int shader2 = mv.createVertexShader(getString(R.string.vec4CoordThroughVertexShader));
-        Log.i(TAG, "shader2: " + Integer.toString(shader2));
-
-        // Create, and compile a shader from a file stored in assets (See also assets/shaders/)
+        // Create, compile, and link shaders from a file stored in assets. See also assets/shaders/.
+        MajVjProgram mvp2 = mv.createProgram();
         AssetManager assets = getResources().getAssets();
         InputStream stream = null;
         try {
@@ -45,29 +48,23 @@ public class Example2 extends MajVjActivity implements MajVjClient {
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
-        int shader3 = mv.createVertexShader(stream);
-        Log.i(TAG, "shader3: " + Integer.toString(shader3));
+        if (mvp2.loadVertexShader(stream) &&
+            mvp2.loadFragmentShader(getString(R.string.fillRedFragmentShader)) &&
+            mvp2.link())
+            Log.i(TAG, "MajVjProgram succeeded to load and link shaders.");
 
-        // Create, and compile a fragment shader, too.
-        int fragmentShader = mv.createFragmentShader(getString(R.string.fillRedFragmentShader));
-        Log.i(TAG, "fragmentShader: " + Integer.toString(fragmentShader));
-
-        // Link shaders, or we can simply pass InputStream or String as shaders.
-        int program = mv.createProgram(shader1, fragmentShader);
-        Log.i(TAG, "program' " + Integer.toString(program));
-
-        // Then, delete program and shaders when it is not needed any more.
-        mv.deleteProgram(program);
-        mv.deleteShader(shader1);
-        mv.deleteShader(shader2);
-        mv.deleteShader(shader3);
-
-        // Or use MajVjProgram class.
-        MajVjProgram mvp = mv.createProgram();
-        mvp.loadShaders(
+        // Simply do everything in a single step.
+        MajVjProgram mvp3 = mv.createProgram();
+        if (mvp3.link(
                 getString(R.string.vec4CoordThroughVertexShader),
-                getString(R.string.fillRedFragmentShader));
-        mvp.shutdown();
+                getString(R.string.fillRedFragmentShader)))
+            Log.i(TAG, "MajVjProgram succeeded to handle shaders in a single step.");
+
+        // Then, release internal GLES2.0 resources when a program is not needed any more.
+        // We should not rely on GC here.
+        mvp1.shutdown();
+        mvp2.shutdown();
+        mvp3.shutdown();
     }
 
     public void onResized(int width, int height) {
