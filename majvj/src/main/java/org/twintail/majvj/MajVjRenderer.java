@@ -16,6 +16,7 @@ final class MajVjRenderer implements Renderer, MajVj {
     private int mHeight;
     private boolean mCreated = false;
     private MajVjClient mClient;
+    private MajVj2DImpl m2D;
     private long mStartTime;
     private long mElapsedTime;
     private long mDeltaTime;
@@ -37,6 +38,8 @@ final class MajVjRenderer implements Renderer, MajVj {
         mStartTime = System.currentTimeMillis();
         mElapsedTime = 0;
         mDeltaTime = 0;
+        if (m2D != null)
+            m2D.setWindowSize(mWidth, mHeight);
         if (!mCreated) {
             mClient.onCreated(this, mWidth, mHeight);
             mCreated = true;
@@ -92,5 +95,14 @@ final class MajVjRenderer implements Renderer, MajVj {
     @Override
     public MajVjProgram createProgram() {
         return new MajVjProgramImpl(this);
+    }
+
+    @Override
+    public MajVj2D get2DInterface() {
+        if (m2D == null) {
+            m2D = new MajVj2DImpl(this);
+            m2D.setWindowSize(mWidth, mHeight);
+        }
+        return m2D;
     }
 }
