@@ -7,8 +7,6 @@ import org.twintail.majvj.MajVjActivity;
 import org.twintail.majvj.MajVjClient;
 import org.twintail.majvj.MajVjProgram;
 
-import java.nio.FloatBuffer;
-
 public class Example4 extends MajVjActivity implements MajVjClient {
 
     private final String TAG = "Example4";
