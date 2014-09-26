@@ -57,6 +57,10 @@ public abstract class MajVjActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Set Activity to use fullscreen window.
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         if (!hasGLES20()) {
             Dialog.fatal(this, "Error", "GLES 2.0 is not supported on this device.", "OK");
             return;
@@ -67,10 +71,6 @@ public abstract class MajVjActivity extends Activity {
         mGLView.setRenderer(new MajVjRenderer(createClient()));
         mGLView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(mGLView);
     }
 
