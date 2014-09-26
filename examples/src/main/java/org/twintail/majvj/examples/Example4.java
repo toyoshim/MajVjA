@@ -24,7 +24,8 @@ public class Example4 extends MajVjActivity implements MajVjClient {
     public void onCreated(MajVj mv, int width, int height) {
         mMv = mv;
         mMvp = mv.createProgram();
-        mMvp.link(readAssetAsString("shaders/glslSandbox.vs"), readAssetAsString("shaders/church.fs"));
+        mMvp.loadAndLink(readAssetAsString("shaders/glslSandbox.vs"),
+                         readAssetAsString("shaders/church.fs"));
         final float[] coords = {
                 -1f, -1f,
                  1f, -1f,

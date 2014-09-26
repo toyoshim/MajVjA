@@ -12,8 +12,8 @@ public interface MajVjProgram {
     public void shutdown();
     public boolean loadVertexShader(String shader);
     public boolean loadFragmentShader(String shader);
-    public boolean link(String vertexShader, String fragmentShader);
-    public boolean link();  // TOOD: Rename to loadAndLink().
+    public boolean link();
+    public boolean loadAndLink(String vertexShader, String fragmentShader);
     public boolean setVertexAttributeBuffer(String name, int dimension, java.nio.Buffer buffer);
     public boolean setVertexAttribute(String name, int dimension, float[] values);
     public boolean setUniform(String name, float value);

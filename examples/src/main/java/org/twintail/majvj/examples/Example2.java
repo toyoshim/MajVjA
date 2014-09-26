@@ -43,7 +43,7 @@ public class Example2 extends MajVjActivity implements MajVjClient {
 
         // Simply do everything in a single step.
         MajVjProgram mvp3 = mv.createProgram();
-        if (mvp3.link(
+        if (mvp3.loadAndLink(
                 getString(R.string.vec4CoordThroughVertexShader),
                 getString(R.string.fillRedFragmentShader)))
             Log.i(TAG, "MajVjProgram succeeded to handle shaders in a single step.");

@@ -22,9 +22,11 @@ public class Example3 extends MajVjActivity implements MajVjClient {
     public void onCreated(MajVj mv, int width, int height) {
         mMv = mv;
         mMvp = mv.createProgram();
-        if (mMvp.link(getString(R.string.vec4CoordThroughVertexShader),
-                      getString(R.string.fillRedFragmentShader)))
+        if (mMvp.loadAndLink(
+                getString(R.string.vec4CoordThroughVertexShader),
+                getString(R.string.fillRedFragmentShader))) {
             Log.i(TAG, "MajVjProgram succeeded to link shaders.");
+        }
 
         float[] coords = {
                  0f,  1f, 1f, 1f,

@@ -44,11 +44,6 @@ final class MajVjProgramImpl implements MajVjProgram {
     }
 
     @Override
-    public boolean link(String vertexShader, String fragmentShader) {
-        return loadVertexShader(vertexShader) && loadFragmentShader(fragmentShader) && link();
-    }
-
-    @Override
     public boolean link() {
         if (mProgram != 0)
             GLES20.glDeleteProgram(mProgram);
@@ -85,6 +80,11 @@ final class MajVjProgramImpl implements MajVjProgram {
         Log.e(TAG, "Program link failed: " + log);
         GLES20.glDeleteProgram(id);
         return false;
+    }
+
+    @Override
+    public boolean loadAndLink(String vertexShader, String fragmentShader) {
+        return loadVertexShader(vertexShader) && loadFragmentShader(fragmentShader) && link();
     }
 
     @Override
