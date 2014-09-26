@@ -91,6 +91,6 @@ final class MajVjRenderer implements Renderer, MajVj {
 
     @Override
     public MajVjProgram createProgram() {
-        return new MajVjProgram(this);
+        return new MajVjProgramImpl(this);
     }
 }
