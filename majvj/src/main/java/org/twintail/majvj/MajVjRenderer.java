@@ -10,7 +10,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class MajVjRenderer implements Renderer, MajVj {
+final class MajVjRenderer implements Renderer, MajVj {
 
     private int mWidth;
     private int mHeight;

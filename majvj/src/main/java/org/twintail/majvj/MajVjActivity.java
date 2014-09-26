@@ -35,7 +35,7 @@ public abstract class MajVjActivity extends Activity {
         return info.reqGlEsVersion >= 0x00020000;
     }
 
-    protected String readAssetAsString(String path) {
+    final protected String readAssetAsString(String path) {
         AssetManager assets = getResources().getAssets();
         try {
             InputStream stream = assets.open(path);
@@ -54,7 +54,7 @@ public abstract class MajVjActivity extends Activity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    final protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Set Activity to use fullscreen window.
@@ -75,7 +75,7 @@ public abstract class MajVjActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
+    final protected void onResume() {
         super.onResume();
         if (mGLView == null)
             return;
@@ -84,7 +84,7 @@ public abstract class MajVjActivity extends Activity {
     }
 
     @Override
-    protected void onPause() {
+    final protected void onPause() {
         super.onPause();
         if (mGLView == null)
             return;
@@ -92,7 +92,7 @@ public abstract class MajVjActivity extends Activity {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    final public boolean onTouchEvent(MotionEvent event) {
         if (mGLView == null)
             return true;
         mGLView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);

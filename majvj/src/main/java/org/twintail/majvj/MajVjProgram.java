@@ -6,7 +6,8 @@ import android.util.Log;
 import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
-public class MajVjProgram {
+// TODO: Define interface and split implementation to MajVjProgramImpl or something like that.
+final public class MajVjProgram {
 
     public static final int POINTS = GLES20.GL_POINTS;
     public static final int LINES = GLES20.GL_LINES;
@@ -202,7 +203,7 @@ public class MajVjProgram {
         return location;
     }
 
-    public void use() {
+    private void use() {
         if (mProgram == 0) {
             Log.e(TAG, "use() is called even mProgram is not set.");
             return;
