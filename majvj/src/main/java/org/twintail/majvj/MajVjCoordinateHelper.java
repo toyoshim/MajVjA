@@ -6,22 +6,24 @@ public class MajVjCoordinateHelper {
 
     private int mWidth;
     private int mHeight;
-    private int mShortSize;
-    private int mLongSize;
     private float mHalfWidth;
     private float mHalfHeight;
-    private float mHalfShortSize;
-    private float mHalfLongSize;
+    private float mRatioX;
+    private float mRatioY;
 
     public void setWindowSize(int width, int height) {
         mWidth = width;
         mHeight = height;
-        mShortSize = Math.min(width, height);
-        mLongSize = Math.max(width, height);
         mHalfWidth = (width - 1) / 2;
         mHalfHeight = (height - 1) / 2;
-        mHalfShortSize = (mShortSize - 1) / 2;
-        mHalfLongSize = (mLongSize - 1) / 2;
+        float aspect = width / height;
+        if (aspect > 1) {
+            mRatioX = aspect;
+            mRatioY = 1f;
+        } else {
+            mRatioX = 1f;
+            mRatioY = 1f / aspect;
+        }
     }
 
     public int getWindowWidth() {
@@ -32,32 +34,21 @@ public class MajVjCoordinateHelper {
         return mHeight;
     }
 
-    public int getShortSize() {
-        return mShortSize;
-    }
-
-    public int getLongSize() {
-        return mLongSize;
-    }
-
     public Float2 Window(Float2 position) {
-        // (0, 0) - (width - 1, height - 1) => (-1, -1) - (1, 1)
         position.x = position.x / mHalfWidth - 0.5f;
         position.y = position.y / mHalfHeight - 0.5f;
         return position;
     }
 
-    public Float2 Short(Float2 position) {
-        // (0, 0) - (min(width, height) - 1, min(width, height) - 1) => (-1, -1) - (1, 1)
-        position.x = position.x / mHalfShortSize - 0.5f;
-        position.y = position.y / mHalfShortSize - 0.5f;
+    public Float2 InnerSquare(Float2 position) {
+        position.x = position.x / mRatioX;
+        position.y = position.y / mRatioY;
         return position;
     }
 
-    public Float2 Long(Float2 position) {
-        // (0, 0) - (max(width, height) - 1, max(width, height) - 1) => (-1, -1) - (1, 1)
-        position.x = position.x / mHalfLongSize - 0.5f;
-        position.y = position.y / mHalfLongSize - 0.5f;
+    public Float2 OuterSquare(Float2 position) {
+        position.x = position.x * mRatioX;
+        position.y = position.y * mRatioY;
         return position;
     }
 }
