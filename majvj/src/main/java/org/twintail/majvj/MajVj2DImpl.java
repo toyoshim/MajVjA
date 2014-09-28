@@ -1,5 +1,7 @@
 package org.twintail.majvj;
 
+import android.opengl.GLES20;
+
 import java.nio.FloatBuffer;
 import java.util.Random;
 
@@ -16,6 +18,7 @@ final class MajVj2DImpl implements MajVj2D {
     private Random mRandom;
     private MajVjProgram mBasicProgram;
     private FloatBuffer mLineBuffer;
+    private float mStrokeWeight = 1.0f;
     private float[] mBackground = { 0.8f, 0.8f, 0.8f, 1.0f };
     private float[] mStroke = { 1.0f, 1.0f, 1.0f, 1.0f };
     private float[] mDivColor = { 255.0f, 255.0f, 255.0f, 255.0f };
@@ -82,6 +85,11 @@ final class MajVj2DImpl implements MajVj2D {
     }
 
     @Override
+    public void strokeWeight(float weight) {
+        mStrokeWeight = weight;
+    }
+
+    @Override
     public void stroke(float gray) {
         stroke(gray, gray, gray);
     }
@@ -106,6 +114,7 @@ final class MajVj2DImpl implements MajVj2D {
 
     @Override
     public void line(float x1, float y1, float x2, float y2) {
+        GLES20.glLineWidth(mStrokeWeight);
         mLineBuffer.put(X(x1));
         mLineBuffer.put(Y(y1));
         mLineBuffer.put(X(x2));

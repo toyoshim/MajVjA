@@ -6,6 +6,7 @@ public interface MajVj2D {
     public void background(float gray, float alpha);
     public void background(float v1, float v2, float v3);
     public void background(float v1, float v2, float v3, float alpha);
+    public void strokeWeight(float weight);
     public void stroke(float gray);
     public void stroke(float gray, float alpha);
     public void stroke(float v1, float v2, float v3);
