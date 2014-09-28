@@ -32,7 +32,7 @@ public class Example5 extends MajVjActivity implements MajVjClient {
         m2D.strokeWeight(4);
         m2D.line(mWidth / 2 - 70, mHeight / 2 - 70, mWidth / 2 + 70, mHeight / 2 + 70);
         m2D.line(mWidth / 2 + 70, mHeight / 2 - 70, mWidth / 2 - 70, mHeight / 2 + 70);
-        // fill(255, 150);
+        m2D.fill(255, 150);
         // ellipse(mWidth / 2, mHeight / 2, 50, 50);
     }
 

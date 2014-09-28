@@ -11,5 +11,9 @@ public interface MajVj2D {
     public void stroke(float gray, float alpha);
     public void stroke(float v1, float v2, float v3);
     public void stroke(float v1, float v2, float v3, float alpha);
+    public void fill(float gray);
+    public void fill(float gray, float alpha);
+    public void fill(float v1, float v2, float v3);
+    public void fill(float v1, float v2, float v3, float alpha);
     public void line(float x1, float y1, float x2, float y2);
 }

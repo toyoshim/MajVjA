@@ -21,6 +21,7 @@ final class MajVj2DImpl implements MajVj2D {
     private float mStrokeWeight = 1.0f;
     private float[] mBackground = { 0.8f, 0.8f, 0.8f, 1.0f };
     private float[] mStroke = { 1.0f, 1.0f, 1.0f, 1.0f };
+    private float[] mFill = { 1.0f, 1.0f, 1.0f, 1.0f };
     private float[] mDivColor = { 255.0f, 255.0f, 255.0f, 255.0f };
 
     private final String basicVertexShader =
@@ -104,6 +105,28 @@ final class MajVj2DImpl implements MajVj2D {
         mStroke[0] = V1(v1);
         mStroke[1] = V2(v2);
         mStroke[2] = V3(v3);
+    }
+
+    @Override
+    public void fill(float gray) {
+        fill(gray, gray, gray);
+    }
+    @Override
+    public void fill(float gray, float alpha) {
+        fill(gray, gray, gray, alpha);
+    }
+
+    @Override
+    public void fill(float v1, float v2, float v3) {
+        mFill[0] = V1(v1);
+        mFill[1] = V2(v2);
+        mFill[2] = V3(v3);
+    }
+
+    @Override
+    public void fill(float v1, float v2, float v3, float alpha) {
+        fill(v1, v2, v3);
+        mFill[3] = Alpha(alpha);
     }
 
     @Override
