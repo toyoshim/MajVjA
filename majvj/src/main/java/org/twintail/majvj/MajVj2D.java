@@ -16,4 +16,5 @@ public interface MajVj2D {
     public void fill(float v1, float v2, float v3);
     public void fill(float v1, float v2, float v3, float alpha);
     public void line(float x1, float y1, float x2, float y2);
+    public void ellipse(float x, float y, float width, float height);
 }
