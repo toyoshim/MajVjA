@@ -1,13 +1,9 @@
 package org.twintail.majvj;
 
-import android.opengl.GLES20;
-
 import java.nio.FloatBuffer;
 import java.util.Random;
 
 final class MajVj2DImpl implements MajVj2D {
-
-    private final String TAG = "MajVj2DImpl";
 
     private final String basicVertexShader =
             "precision mediump float;\n" +
@@ -156,9 +152,8 @@ final class MajVj2DImpl implements MajVj2D {
 
     @Override
     public void line(float x1, float y1, float x2, float y2) {
-        GLES20.glLineWidth(mStrokeWeight);
-        GLES20.glEnable(GLES20.GL_BLEND);
-        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        mMv.setLineWidth(mStrokeWeight);
+        mMv.setAlphaBlend(true, MajVj.SRC_ALPHA, MajVj.ONE_MINUS_SRC_ALPHA);
         mLineBuffer.put(X(x1));
         mLineBuffer.put(Y(y1));
         mLineBuffer.put(X(x2));
@@ -173,9 +168,8 @@ final class MajVj2DImpl implements MajVj2D {
 
     @Override
     public void ellipse(float x, float y, float width, float height) {
-        GLES20.glLineWidth(mStrokeWeight);
-        GLES20.glEnable(GLES20.GL_BLEND);
-        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        mMv.setLineWidth(mStrokeWeight);
+        mMv.setAlphaBlend(true, MajVj.SRC_ALPHA, MajVj.ONE_MINUS_SRC_ALPHA);
         mEllipseCoords.position(0);
         mBasicProgram.setVertexAttributeBuffer("aCoord", 2, mEllipseCoords);
         mSize[0] = Width(width);

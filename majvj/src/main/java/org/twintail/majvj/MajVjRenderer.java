@@ -70,6 +70,17 @@ final class MajVjRenderer implements Renderer, MajVj {
     }
 
     @Override
+    public void clearColorBuffer(float r, float g, float b, float a) {
+        GLES20.glClearColor(r, g, b, a);
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+    }
+
+    @Override
+    public void clearDepthBuffer() {
+        GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT);
+    }
+
+    @Override
     public FloatBuffer createFloatBuffer(int length) {
         return ByteBuffer.allocateDirect(length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
     }
@@ -82,14 +93,20 @@ final class MajVjRenderer implements Renderer, MajVj {
     }
 
     @Override
-    public void clearColorBuffer(float r, float g, float b, float a) {
-        GLES20.glClearColor(r, g, b, a);
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+    public void setAlphaBlend(boolean enable, int src, int dst) {
+        if (enable) {
+            GLES20.glEnable(GLES20.GL_BLEND);
+            GLES20.glBlendFunc(src, dst);
+            GLES20.glDisable(GLES20.GL_DEPTH_TEST);
+        } else {
+            GLES20.glDisable(GLES20.GL_BLEND);
+            GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+        }
     }
 
     @Override
-    public void clearDepthBuffer() {
-        GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT);
+    public void setLineWidth(float width) {
+        GLES20.glLineWidth(width);
     }
 
     @Override
